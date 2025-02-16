@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ "$(pwd)" = "scripts" ]]; then
+    POST_PATH="../source/post/$(openssl rand -hex 8).txt"
+else
+    POST_PATH="source/post/$(openssl rand -hex 8).txt"
+fi
+
+touch "$POST_PATH"
+echo "POST_NAME" >> "$POST_PATH"
+date +%Y-%m-%d >> "$POST_PATH"
+
+printf '\033[0;34mINFO     \033[0mCreated new post at %s\n' "$POST_PATH"

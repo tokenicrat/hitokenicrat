@@ -1,6 +1,7 @@
 import os
 import shutil
 import sys
+import re
 
 # Fancy colorful output
 RED = "\033[0;31m"
@@ -100,23 +101,49 @@ except Exception as e:
 log("Copy static files")
 
 # Convert plain-text files into HTML format
+# It's just simple find-replace mechanism. Don't expect anything fancy
+
 def convert_text(type, in_txt, out_html):
-    # TODO: Finish conversion part
-    pass
+    log(f"Start converting {in_txt} to {out_html}")
+    try:
+        with open(in_txt, 'r') as f:
+           fl = f.readlines() 
+        (ARTICLE_NAME, CREATION_TIME) = (fl[0][:-1], fl[1][:-1])
+        CONTENT = ""
+        for l in fl[2:]:
+            s = l
+            if l[0] == '<' and l[-2] == '>':
+                s = l[1:-2]
+                if len(s) > 75:
+                    s = s[0:74] + "..."
+                s = f'<a href="{l[1:-2]}">&lt;' + s + '&gt;</a>'
+            CONTENT += s
+        res = eval(template.template[type])
+        with open(out_html, 'w') as des:
+            des.write(res)
+        return (ARTICLE_NAME, CREATION_TIME, out_html)
+    except Exception as e:
+        log(e, 1)
+        log(f"Something went wrong while converting {in_txt} to {out_html}")
+        log(f"Skipping")
 
 if not os.path.isdir("source"):
     log("Missing source", 1)
     unexpected_exit(1)
 
+articles = []
+
 try:
     for t in os.listdir("source"):
         t_path = os.path.join("source", t)
         if os.path.isdir(t_path):
+            os.mkdir(os.path.join("site", t))
             for f in os.listdir(t_path):
                 f_path = os.path.join(t_path, f)
-                convert_text(t, f_path, \
-                    os.path.join("site", f, os.path.splitext(os.path.basename(f))[0]) + ".html"\
+                (an, ct, path) = convert_text(t, f_path, \
+                    os.path.join("site", t, os.path.splitext(os.path.basename(f))[0]) + ".html"\
                     )
+                articles.append((an, ct, path))
                 # Resulting in site/[TEMPLATE]/[FILENAME_NOEXT].html
 except Exception as e:
     log(e, 1)
@@ -124,6 +151,24 @@ except Exception as e:
     unexpected_exit(1)
 
 # Generate front page
-# TODO: Finish this part
 
-log("Successfully generated the site", 4)
+# First sort everything in time order, new to old
+articles.sort(key = lambda x: x[1], reverse = True)
+
+POST_ITEM = ""
+
+# Generate front page
+log("Generate front page")
+try:
+    for item in articles:
+        CREATION_TIME = item[1]
+        ARTICLE_NAME = item[0]
+        PATH = item[2].replace("site/", "")
+        POST_ITEM += eval(template.template["post_item"])
+    with open("site/index.html", 'w') as f:
+        f.write(eval(template.template["front_page"]))
+except:
+    log("Fail to generate front page", 1)
+    unexpected_exit(1)
+
+log("Finish generating the site", 4)
