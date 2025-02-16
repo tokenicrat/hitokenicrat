@@ -15,8 +15,7 @@ f\"\"\"
 <body>
     <h1>{conf.config["SITE_NAME"]}</h1>
     <p>
-        <a href="{conf.config["SITE_ADDR"]}">Home</a> | 
-        <a href="https://github.com/tokenicrat/mailblog">Theme</a>
+        {conf.config["TOOL_BAR"]}
     </p>
     <hr>
     <pre>
@@ -46,8 +45,7 @@ f\"\"\"
 <body>
     <h1>{conf.config["SITE_NAME"]}</h1>
     <p>
-        <a href="{conf.config["SITE_ADDR"]}">Home</a> | 
-        <a href="https://github.com/tokenicrat/mailblog">Theme</a>
+        {conf.config["TOOL_BAR"]}
     </p>
     <hr>
     <pre>

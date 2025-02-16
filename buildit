@@ -114,8 +114,8 @@ def convert_text(type, in_txt, out_html):
             s = l
             if l[0] == '<' and l[-2] == '>':
                 s = l[1:-2]
-                if len(s) > 75:
-                    s = s[0:74] + "..."
+                if len(s) > 70:
+                    s = s[0:70] + "..."
                 s = f'<a href="{l[1:-2]}">&lt;' + s + '&gt;</a>'
             CONTENT += s
         res = eval(template.template[type])
