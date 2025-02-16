@@ -1,0 +1,8 @@
+MailBlog Test
+2025-02-16
+
+This is a brand new mailing list style blog frameworks. Its basic features have been fully developed, while comment-related stuff are still pending.
+
+It is planned to use Cloudflare R2 storage and Cloudflare Workers as dynamic storage. For static, old comment, I will use GitHub Actions to periodically back up and free R2.
+
+Still working on it...
