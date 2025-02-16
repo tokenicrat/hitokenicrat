@@ -2,6 +2,6 @@
 
 A light-weight mailing list-style blog framework, written in Python. No dependencies other than Python, work on any static page hoster.
 
-See the demo: https://mailblog.tokenisite.top
+See the demo: https://mailblog.pages.dev
 
 For details for customizing, see source code with good annotations.
